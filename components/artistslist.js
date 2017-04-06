@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { ListView } from 'react-native'
+import { ListView , TouchableOpacity} from 'react-native'
 import ArtistBox from './artistbox'
+import { Actions } from 'react-native-router-flux'
 
 export default class ArtistsList extends Component{
     constructor(props)
@@ -18,7 +19,10 @@ export default class ArtistsList extends Component{
              dataSource: this.state.dataSource.cloneWithRows(data)
         })
     }
-
+    //Nos lleva a la vista donde podemos ver los detalles del artista
+    handlePress(artist){
+        Actions.artistDetail({ artist:artist })
+    }
     //Antes de renderizar el componente
     componentDidMount()
     {
@@ -40,7 +44,14 @@ export default class ArtistsList extends Component{
         <ListView 
             enableEmptySections={true}
             dataSource = {this.state.dataSource}
-            renderRow = { (artist) => <ArtistBox artist = { artist } /> }
+            renderRow = { (artist) => {
+                    return(
+                        <TouchableOpacity onPress={ () => this.handlePress(artist) }>
+                            <ArtistBox artist = { artist } /> 
+                        </TouchableOpacity>
+                    )
+                }
+            }
         />
         )
     }
